@@ -227,12 +227,9 @@ ipcMain.handle('app:openExternal', async (_, url) => {
 // Token management
 ipcMain.handle('tokens:save', async (_, name, token) => {
   try {
-    const tokens = JSON.parse(fs.readFileSync(tokensPath, 'utf8'));
-    if (tokens.some(t => t.name === name)) {
-      return { success: false, error: 'A token with this name already exists' };
-    }
-    tokens.push({ name, token });
-    fs.writeFileSync(tokensPath, JSON.stringify(tokens, null, 2));
+    const safeName = typeof name === 'string' && name.trim() ? name.trim() : 'Main Account';
+    const singleToken = [{ name: safeName, token }];
+    fs.writeFileSync(tokensPath, JSON.stringify(singleToken, null, 2));
     return { success: true };
   } catch (error) {
     return { success: false, error: error.message };
@@ -242,7 +239,11 @@ ipcMain.handle('tokens:save', async (_, name, token) => {
 ipcMain.handle('tokens:get', async () => {
   try {
     const tokens = JSON.parse(fs.readFileSync(tokensPath, 'utf8'));
-    return { success: true, tokens };
+    const singleToken = Array.isArray(tokens) && tokens.length > 0 ? [tokens[0]] : [];
+    if (Array.isArray(tokens) && tokens.length > 1) {
+      fs.writeFileSync(tokensPath, JSON.stringify(singleToken, null, 2));
+    }
+    return { success: true, tokens: singleToken };
   } catch (error) {
     return { success: false, error: error.message };
   }
@@ -251,7 +252,7 @@ ipcMain.handle('tokens:get', async () => {
 ipcMain.handle('tokens:delete', async (_, name) => {
   try {
     const tokens = JSON.parse(fs.readFileSync(tokensPath, 'utf8'));
-    const newTokens = tokens.filter(t => t.name !== name);
+    const newTokens = tokens.filter(t => t.name !== name).slice(0, 1);
     fs.writeFileSync(tokensPath, JSON.stringify(newTokens, null, 2));
     return { success: true };
   } catch (error) {

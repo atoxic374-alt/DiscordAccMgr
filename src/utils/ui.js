@@ -77,14 +77,14 @@ export const showInfoModal = () => {
   version.textContent = `Version 1.5.6`;
 
   const author = document.createElement('p');
-  author.textContent = 'Created by Bherl1';
+  author.textContent = 'By Ahmed';
 
   const links = document.createElement('div');
   links.className = 'links';
 
   const githubLink = document.createElement('a');
-  githubLink.href = 'https://github.com/Bherl1/DiscordAccMgr';
-  githubLink.textContent = 'GitHub Repository';
+  githubLink.href = 'https://discord.gg/ens';
+  githubLink.textContent = 'Discord Invite';
   githubLink.addEventListener('click', (e) => {
     e.preventDefault();
     window.electronAPI.openExternal(githubLink.href);

@@ -31,14 +31,14 @@
       "resources/**"
     ]
   },
-  "author": "Bherl1",
+  "author": "Ahmed",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Bherl1/DiscordAccMgr.git"
+    "url": "https://discord.gg/ens"
   },
   "bugs": {
-    "url": "https://github.com/Bherl1/DiscordAccMgr/issues"
+    "url": "https://discord.gg/ens"
   },
-  "homepage": "https://github.com/Bherl1/DiscordAccMgr"
+  "homepage": "https://discord.gg/ens"
 }
