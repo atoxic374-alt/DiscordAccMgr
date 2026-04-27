@@ -566,3 +566,136 @@ button:disabled {
   80% { opacity: 1; transform: translateY(0); }
   100% { opacity: 0; transform: translateY(-20px); }
 }
+
+/* ── DM Sender ─────────────────────────────────────────── */
+
+.send-btn {
+  background: #3ba55d;
+}
+
+.send-btn:hover {
+  background: #2d8a4e;
+}
+
+.send-modal-content {
+  width: min(92%, 520px);
+}
+
+.modal-label {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-top: 14px;
+  margin-bottom: 6px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.send-target-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.send-target-btn {
+  flex: 1;
+  min-width: 100px;
+  padding: 10px 12px;
+  background: var(--bg-primary);
+  border: 2px solid transparent;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.send-target-btn:hover:not([disabled]) {
+  border-color: var(--accent);
+  color: var(--text);
+  background: rgba(88, 101, 242, 0.08);
+}
+
+.send-target-btn.active {
+  border-color: var(--accent);
+  color: var(--text);
+  background: rgba(88, 101, 242, 0.15);
+}
+
+.send-target-btn[disabled] {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.target-count {
+  opacity: 0.7;
+  font-size: 0.8rem;
+}
+
+.modal-select {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--bg-primary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.modal-select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.modal-select option {
+  background: var(--bg-secondary);
+  color: var(--text);
+}
+
+.modal-textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px 12px;
+  background: var(--bg-primary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.9rem;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+  line-height: 1.5;
+}
+
+.modal-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.member-count-badge {
+  display: inline-block;
+  background: rgba(88, 101, 242, 0.18);
+  color: var(--accent);
+  border-radius: 12px;
+  padding: 3px 12px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+.send-stats {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 12px;
+  font-size: 0.9rem;
+}
+
+.stat-sent { color: var(--success); }
+.stat-failed { color: var(--danger); }

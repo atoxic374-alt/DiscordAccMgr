@@ -26,10 +26,15 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getDMMessages: (channelId, beforeId) => ipcRenderer.invoke('discord:getDMMessages', channelId, beforeId),
   deleteDMMessage: (channelId, messageId) => ipcRenderer.invoke('discord:deleteDMMessage', channelId, messageId),
   closeDM: (channelId) => ipcRenderer.invoke('discord:closeDM', channelId),
-  
-  // New Group Manager endpoints
+
+  // Group Manager
   getGroups: () => ipcRenderer.invoke('discord:getGroups'),
   leaveGroup: (groupId) => ipcRenderer.invoke('discord:leaveGroup', groupId),
   getGroupMessages: (channelId, beforeId) => ipcRenderer.invoke('discord:getGroupMessages', channelId, beforeId),
-  deleteGroupMessage: (channelId, messageId) => ipcRenderer.invoke('discord:deleteGroupMessage', channelId, messageId)
+  deleteGroupMessage: (channelId, messageId) => ipcRenderer.invoke('discord:deleteGroupMessage', channelId, messageId),
+
+  // DM Sender
+  sendDM: (userId, message) => ipcRenderer.invoke('discord:sendDM', userId, message),
+  getServerChannels: (serverId) => ipcRenderer.invoke('discord:getServerChannels', serverId),
+  getServerMembers: (serverId, channelId) => ipcRenderer.invoke('discord:getServerMembers', serverId, channelId),
 });

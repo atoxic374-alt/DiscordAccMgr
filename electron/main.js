@@ -551,6 +551,89 @@ ipcMain.handle('discord:leaveServer', async (_, serverId) => {
   }
 });
 
+// Send DM to a user
+ipcMain.handle('discord:sendDM', async (_, userId, message) => {
+  try {
+    if (!discordClient || !discordClient.token) {
+      return { success: false, error: 'Not connected' };
+    }
+    const user = await discordClient.users.fetch(userId);
+    const dm = await user.createDM();
+    await dm.send(message);
+    return { success: true };
+  } catch (error) {
+    console.error('Send DM error:', error);
+    const status = error.status || error.httpStatus;
+    const retryAfter = error.retryAfter || null;
+    return {
+      success: false,
+      error: error.message,
+      rateLimited: status === 429,
+      retryAfter
+    };
+  }
+});
+
+// Get text channels of a server
+ipcMain.handle('discord:getServerChannels', async (_, serverId) => {
+  try {
+    if (!discordClient || !discordClient.guilds) {
+      return { success: false, error: 'Not connected' };
+    }
+    const guild = discordClient.guilds.cache.get(serverId);
+    if (!guild) return { success: false, error: 'Server not found' };
+
+    const channels = Array.from(guild.channels.cache.values())
+      .filter(c => c.type === 'GUILD_TEXT' || c.type === 0)
+      .map(c => ({ id: c.id, name: c.name }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    return { success: true, channels };
+  } catch (error) {
+    console.error('Get server channels error:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Get members of a server, optionally filtered by channel
+ipcMain.handle('discord:getServerMembers', async (_, serverId, channelId) => {
+  try {
+    if (!discordClient || !discordClient.guilds) {
+      return { success: false, error: 'Not connected' };
+    }
+    const guild = discordClient.guilds.cache.get(serverId);
+    if (!guild) return { success: false, error: 'Server not found' };
+
+    try {
+      await guild.members.fetch();
+    } catch (e) {
+      console.error('Member fetch warning:', e.message);
+    }
+
+    let rawMembers;
+    if (channelId && channelId !== 'all') {
+      const channel = guild.channels.cache.get(channelId);
+      if (!channel) return { success: false, error: 'Channel not found' };
+      rawMembers = Array.from(channel.members.values());
+    } else {
+      rawMembers = Array.from(guild.members.cache.values());
+    }
+
+    const members = rawMembers
+      .filter(m => !m.user.bot && m.id !== discordClient.user.id)
+      .map(m => ({
+        id: m.user.id,
+        username: m.user.username,
+        displayName: m.user.globalName || m.user.username
+      }));
+
+    return { success: true, members, count: members.length };
+  } catch (error) {
+    console.error('Get server members error:', error);
+    return { success: false, error: error.message };
+  }
+});
+
 app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
