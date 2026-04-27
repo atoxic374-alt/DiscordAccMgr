@@ -1,1 +1,3 @@
-export const getAppVersion = () => '1.5.6';
+import { version } from '../../package.json';
+
+export const getAppVersion = () => version;
