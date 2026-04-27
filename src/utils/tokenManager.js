@@ -1,4 +1,3 @@
-import { showInputModal } from './ui.js';
 import { updateTokensList } from './domManager.js';
 
 export async function loadSavedTokens() {
@@ -39,13 +38,10 @@ export async function saveToken(token, status) {
         return;
     }
 
-    const name = await showInputModal('Save Token', 'Enter a name for this token:');
-    if (!name) return;
-
     try {
-        const result = await window.electronAPI.saveToken(name, token);
+        const result = await window.electronAPI.saveToken('Main Account', token);
         if (result.success) {
-            status.textContent = 'Token saved successfully';
+            status.textContent = 'Token saved (single account mode)';
             status.className = 'success';
             await loadSavedTokens();
         } else {
